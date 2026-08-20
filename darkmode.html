@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Mode</title>
+
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --accent: #3b82f6;
+    }
+
+    body.dark {
+      --bg: #111827;
+      --text: #f9fafb;
+      --card-bg: #1f2937;
+      --border: #374151;
+      --accent: #60a5fa;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+
+    /* Nút toggle */
+    #darkModeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 9999;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #darkModeToggle:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <button id="darkModeToggle" aria-label="Chuyển chế độ tối/sáng">🌙</button>
+
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      // Khôi phục trạng thái đã lưu hoặc theo hệ thống
+      if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark');
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        body.classList.add('dark');
+      }
+
+      // Cập nhật icon
+      function updateIcon() {
+        toggleBtn.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
+      }
+      updateIcon();
+
+      // Xử lý bấm nút
+      toggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
+        updateIcon();
+      });
+    })();
+  </script>
+
+</body>
+</html>
