@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleHabit - Quản lý thói quen hàng ngày</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Phần Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Bố cục chính */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        /* Khối thêm thói quen mới */
+        .add-habit-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .add-habit-section h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        /* Danh sách thói quen */
+        .habit-list-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .habit-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .habit-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .habit-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.3rem;
+        }
+
+        .habit-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .habit-tag {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            color: #495057;
+        }
+
+        /* Nút đánh dấu hoàn thành */
+        .check-btn {
+            background: none;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .check-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .check-btn.completed {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #777;
+            margin-top: 2rem;
+        }
+
+        /* Responsive cho thiết bị nhỏ */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SimpleHabit</h1>
+        <p>Kiến tạo thói quen nhỏ, thành tựu lớn</p>
+    </header>
+
+    <div class="container">
+        <!-- Cột bên trái: Form thêm thói quen -->
+        <aside class="add-habit-section">
+            <h2>Thêm Mục Tiêu Mới</h2>
+            <form id="habitForm">
+                <div class="form-group">
+                    <label for="habitName">Tên thói quen</label>
+                    <input type="text" id="habitName" placeholder="Vd: Dậy sớm lúc 6h..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="habitCategory">Phân loại</label>
+                    <select id="habitCategory">
+                        <option value="Tự do">Tự do</option>
+                        <option value="Thể thao & Vận động">Thể thao & Vận động</option>
+                        <option value="Học tập & Kỹ năng">Học tập & Kỹ năng</option>
+                        <option value="Nghệ thuật & Sáng tạo">Nghệ thuật & Sáng tạo</option>
+                        <option value="Sức khỏe">Sức khỏe</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="habitFrequency">Tần suất</label>
+                    <select id="habitFrequency">
+                        <option value="Mỗi ngày">Mỗi ngày</option>
+                        <option value="3 lần/tuần">3 lần/tuần</option>
+                        <option value="Cuối tuần">Cuối tuần</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Tạo Thói Quen</button>
+            </form>
+        </aside>
+
+        <!-- Cột bên phải: Danh sách các thói quen đang theo dõi -->
+        <main class="habit-list-section">
+            
+            <div class="habit-card">
+                <div class="habit-info">
+                    <h3>Hoàn thiện mix/master track nhạc</h3>
+                    <p>Dành 1 giờ kiểm tra lại các dải âm thanh.</p>
+                    <span class="habit-tag">Nghệ thuật & Sáng tạo</span>
+                    <span class="habit-tag">Mỗi ngày</span>
+                </div>
+                <button class="check-btn" title="Đánh dấu hoàn thành">✓</button>
+            </div>
+
+            <div class="habit-card">
+                <div class="habit-info">
+                    <h3>Luyện tập bóng rổ</h3>
+                    <p>Tập ném phạt và chạy chỗ tại sân.</p>
+                    <span class="habit-tag">Thể thao & Vận động</span>
+                    <span class="habit-tag">3 lần/tuần</span>
+                </div>
+                <button class="check-btn" title="Đánh dấu hoàn thành">✓</button>
+            </div>
+
+            <div class="habit-card">
+                <div class="habit-info">
+                    <h3>Viết script tự động hóa</h3>
+                    <p>Code ít nhất 50 dòng code cấu trúc web/tool.</p>
+                    <span class="habit-tag">Học tập & Kỹ năng</span>
+                    <span class="habit-tag">Mỗi ngày</span>
+                </div>
+                <button class="check-btn" title="Đánh dấu hoàn thành">✓</button>
+            </div>
+
+            <div class="habit-card">
+                <div class="habit-info">
+                    <h3>Đạp xe thể dục</h3>
+                    <p>Đạp xe 5km quanh khu vực vào buổi sáng sớm.</p>
+                    <span class="habit-tag">Thể thao & Vận động</span>
+                    <span class="habit-tag">Cuối tuần</span>
+                </div>
+                <button class="check-btn" title="Đánh dấu hoàn thành">✓</button>
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SimpleHabit Project. Bắt đầu từ những điều cơ bản nhất.</p>
+    </footer>
+
+</body>
+</html>
